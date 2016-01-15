@@ -23,7 +23,9 @@ function cooldown(){
 
 var command = '';
 
-app.use(express.static('public'));
+app.use('/', express.static('public', {
+	    index: "index.html"
+}));
 
 var drone = new Drone(UUID);
 

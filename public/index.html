@@ -77,7 +77,7 @@ function initSpeechApi() {
   };
   recognition.onend = function() {};
 
-  var value = '';
+  var value = null;
   recognition.onresult = function(event) {
     for (var i=0; i<event.results.length; i++) {
       value = event.results[i][0].transcript;
@@ -92,19 +92,29 @@ function initSpeechApi() {
     }
     me.addClass('active');
     recognition.start();
-    value = '';
+    value = null;
     jQuery('#recognition').text('音声認識開始');
   }).mouseup(stopRecognition).mouseleave(stopRecognition);
 
   function stopRecognition(){
     jQuery(this).removeClass('active');
     recognition.stop();
-    if (value.indexOf('前') == 0) {
-      jQuery('#frontFlip').click();
-    } else if (value.indexOf('後') == 0) {
-      jQuery('#backFlip').click();
+    if (value == null || value.length == 0) {
+      return;
     }
-    value = '';
+    var first = value.substr(0, 1);
+    if (first == '前') {
+      jQuery('#frontFlip').click();
+    } else if (first == '後') {
+      jQuery('#backFlip').click();
+    } else if (first == '右') {
+      jQuery('#turnRight').click();
+    } else if (first == '左') {
+      jQuery('#turnLeft').click();
+    } else if (first == '終') {
+      jQuery('#land').click();
+    }
+    value = null;
   }
 }
 
