@@ -58,6 +58,14 @@ app.get('/takeoff', function (req, res) {
                         drone.turnRight({ steps: STEPS });
 			cooldown();
                         break;
+                    case 'up':
+                        drone.up({ steps: STEPS * 2.5 });
+                        cooldown();
+                        break;
+                    case 'down':
+                        drone.down({ steps: STEPS * 2.5 });
+                        cooldown();
+                        break;
                     }
                 },
                 STEPS * 12
@@ -104,6 +112,29 @@ app.get('/turnRight', function(req, res) {
     command = 'tright';
 	res.send('Turn Right');
     });
+
+/* 前転 */
+app.get('/frontFlip', function(req, res) {
+	drone.frontFlip();
+	res.send('Front Flip');
+    });
+
+/* 後転 */
+app.get('/backFlip', function(req, res) {
+	drone.backFlip();
+	res.send('Back Flip');
+    });
+
+/* 上昇 */
+app.get('/up', function(req, res) {
+    command = 'up';
+	res.send('Up');
+    });
+
+/* 下降 */
+app.get('/down', function(req, res) {
+    command = 'down';
+	res.send('Down');
 
 app.get('/stop', function(req, res){
     command = '';
