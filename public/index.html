@@ -1,4 +1,17 @@
 <html>
+<head>
+<style type="text/css">
+#voice {
+  height: 100px;
+  width: 100px;
+  border-style: solid;
+  border-color: black;
+}
+#voice.active {
+  background: red;
+}
+</style>
+</head>
 <body>
 <button class="op" id="connect">Connect</button>
 <button class="op" id="takeoff">Takeoff</button>
@@ -25,57 +38,77 @@
 </tr>
 </table>
 
-<input type="checkbox" id="voice">音声
-
 <div>
   Battery: <span id="battery"></span>%
   Flying: <span id="flying"></span>
 </div>
 
-<div id="path"></div>
-<div id="response"></div>
+<div>
+  Request: <span id="path"></span>
+</div>
+<div>
+  Response: <span id="response"></span>
+</div>
+
+音声認識（下の□をクリックしている間、音声を認識します）
+<div id="voice">
+  <span id="recognition"></span>
+</div>
 
 <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 <script type="text/javascript">
-if (!('webkitSpeechRecognition' in window)) {
-  alert('音声入力には未対応です。');
-} else {
+function initSpeechApi() {
+  if (!('webkitSpeechRecognition' in window)) {
+    alert('音声入力には未対応です。');
+    return;
+  }
   var recognition = new webkitSpeechRecognition();
-  var recognizing = false;
   recognition.lang = 'ja_JP';
   recognition.continuous = true;
   recognition.interimResults = true;
 
-  recognition.onstart = function() {
-    recognizing = true;
-  };
-
+  recognition.onstart = function() {};
   recognition.onerror = function(event) {
-    if (event.error == 'no-speech') {
-    }
-    if (event.error == 'audio-capture') {
-    }
-    if (event.error == 'not-allowed') {
-    }
+    console.log('recognition.onerror:' + event.error);
   };
+  recognition.onend = function() {};
 
-  recognition.onend = function() {
-    recognizing = false;
-  };
-
+  var value = '';
   recognition.onresult = function(event) {
-    var value = '';
-    for (var i = event.resultIndex; i < event.results.length; i++) {
-      value += event.results[i][0].transcript;
+    for (var i=0; i<event.results.length; i++) {
+      value = event.results[i][0].transcript;
     }
-    jQuery('#response').text(value);
-    if (value == '飛び上がれ') {
-      jQuery('#takeoff').click();
-    }
+    jQuery('#recognition').text(value);
   };
+
+  jQuery('#voice').mousedown(function(){
+    var me = jQuery(this);
+    if (me.hasClass('active')) {
+      return;
+    }
+    me.addClass('active');
+    recognition.start();
+    value = '';
+    jQuery('#recognition').text('音声認識開始');
+  }).mouseup(stopRecognition).mouseleave(stopRecognition);
+
+  function stopRecognition(){
+    jQuery(this).removeClass('active');
+    recognition.stop();
+    if (value.indexOf('前') == 0) {
+      jQuery('#forward').click();
+    } else if (value.indexOf('右') == 0) {
+      jQuery('#turnRight').click();
+    } else if (value.indexOf('左') == 0) {
+      jQuery('#turnLeft').click();
+    }
+    value = '';
+  }
 }
 
 jQuery(document).ready(function(){
+  initSpeechApi();
+
   jQuery('button.op').click(function(){
     var button = jQuery(this);
     var id = button.attr('id');
@@ -84,14 +117,6 @@ jQuery(document).ready(function(){
     jQuery.get(path).done(function(data) {
       jQuery('#response').text(data);
     });
-  });
-
-  jQuery('#voice').change(function(){
-    if(jQuery(this).is(':checked')) {
-      recognition.start();
-    } else {
-      recognition.stop();
-    }
   });
 
   /* 状態を把握 */
