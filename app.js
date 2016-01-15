@@ -31,19 +31,6 @@ app.get('/', function (req, res) {
   res.send('ready for flight!');
 });
 
-/* 接続 */
-app.get('/connect', function(req, res){
-    drone.connect(function() {
-        drone.setup(function(){
-            console.log('Configured for Rolling Spider! ', drone.name);
-            drone.flatTrim();
-            drone.startPing();
-            drone.flatTrim();
-            res.send('Connect');
-        });
-    });
-});
-
 /* 離陸 */
 app.get('/takeoff', function (req, res) {
 	drone.takeOff(
@@ -124,3 +111,12 @@ app.get('/battery', function(req, res) {
 app.listen(3000, function () {
     console.log('Example app listening on port 3000!');
     });
+
+drone.connect(function() {
+    drone.setup(function(){
+        console.log('Configured for Rolling Spider! ', drone.name);
+        drone.flatTrim();
+        drone.startPing();
+        drone.flatTrim();
+    });
+});
