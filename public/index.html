@@ -1,16 +1,28 @@
 <html>
 <body>
+<button class="op" id="connect">Connect</button>
 <button class="op" id="takeoff">Takeoff</button>
 <button class="op flying" id="land">Land</button>
 <button class="op" id="emergency">Emergency</button>
 
 <table>
-<tr><td><button class="op flying" id="forward">↑</button></td></tr>
+<tr>
+    <td></td>
+    <td>
+        <button class="op flying" id="forward">↑</button>
+    </td>
+    <td></td>
+</tr>
 <tr>
   <td><button class="op flying" id="turnLeft">←</button></td>
+  <td><button class="op flying" id="stop">■</button></td>
   <td><button class="op flying" id="turnRight">⇨</button></td>
 </tr>
-<tr><td><button class="op flying" id="backward">↓</button></td></tr>
+<tr>
+    <td></td>
+    <td><button class="op flying" id="backward">↓</button></td>
+    <td></td>
+</tr>
 </table>
 
 <input type="checkbox" id="voice">音声
