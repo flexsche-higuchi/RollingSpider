@@ -93,24 +93,28 @@ app.get('/emergency', function(req, res) {
 app.get('/forward', function(req, res) {
     command = 'forward';
 	res.send('Forward');
+      cooldown();
     });
 
 /* 後進 */
 app.get('/backward', function(req, res) {
     command = 'backward';
 	res.send('Backward');
+      cooldown();
     });
 
 /* 左旋回 */
 app.get('/turnLeft', function(req, res) {
     command = 'tleft';
 	res.send('Turn Left');
+      cooldown();
     });
 
 /* 右旋回 */
 app.get('/turnRight', function(req, res) {
     command = 'tright';
 	res.send('Turn Right');
+      cooldown();
     });
 
 /* 前転 */
