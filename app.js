@@ -116,15 +116,15 @@ app.get('/turnRight', function(req, res) {
 /* 前転 */
 app.get('/frontFlip', function(req, res) {
       drone.frontFlip({ steps: STEPS });
-      cooldown();
 	res.send('Front Flip');
+      cooldown();
     });
 
 /* 後転 */
 app.get('/backFlip', function(req, res) {
       drone.backFlip({ steps: STEPS });
-      cooldown();
 	res.send('Back Flip');
+      cooldown();
     });
 
 /* 上昇 */
