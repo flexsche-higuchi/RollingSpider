@@ -1,7 +1,14 @@
 var express = require('express');
 var Drone = require('rolling-spider');
 var app = express();
-var UUID = '3ae0bcf29b0b4753a0c8a31d576aae55';
+var UUID = '';
+if (process.env.UUID) {
+    console.log('UUID:', process.env.UUID);
+    var UUID = process.env.UUID;
+} else {
+    console.log('You shoud set UUID');
+    process.exit();
+}
 
 var ACTIVE = true;
 var STEPS = 20;
