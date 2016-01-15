@@ -11,7 +11,7 @@ if (process.env.UUID) {
 }
 
 var ACTIVE = true;
-var STEPS = 20;
+var STEPS = 5;
 
 /* 一定時間はコマンドを受け付けないようにする */
 function cooldown(){
@@ -38,22 +38,29 @@ app.get('/takeoff', function (req, res) {
             res.send("takeoff");
             setInterval(
                 function(){
+		    if (!ACTIVE) {
+			return;
+		    }
                     switch(command){
                     case 'forward':
-                        drone.forward({ speed: 10 });
+                        drone.forward({ steps: STEPS });
+			cooldown();
                         break;
                     case 'backward':
-                        drone.backward({ speed: 10 });
+                        drone.backward({ steps: STEPS });
+			cooldown();
                         break;
                     case 'tleft':   
-                        drone.turnLeft();
+                        drone.turnLeft({ steps: STEPS });
+			cooldown();
                         break;
                     case 'tright':   
-                        drone.turnRight();
+                        drone.turnRight({ steps: STEPS });
+			cooldown();
                         break;
                     }
                 },
-                100
+                STEPS * 12
             )
         }
     );
