@@ -40,10 +40,10 @@ app.get('/takeoff', function (req, res) {
                 function(){
                     switch(command){
                     case 'forward':
-                        drone.forward();
+                        drone.forward({ speed: 10 });
                         break;
                     case 'backward':
-                        drone.backward();
+                        drone.backward({ speed: 10 });
                         break;
                     case 'tleft':   
                         drone.turnLeft();
