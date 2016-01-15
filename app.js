@@ -39,28 +39,31 @@ app.get('/connect', function(req, res){
 
 /* 離陸 */
 app.get('/takeoff', function (req, res) {
-	res.send("takeoff");
-	drone.takeOff();
-    setInterval(
+	drone.takeOff(
         function(){
-            switch(command){
-            case 'forward':
-                drone.forward();
-                break;
-            case 'backward':
-                drone.backward();
-                break;
-            case 'tleft':   
-                drone.turnLeft();
-                break;
-            case 'tright':   
-                drone.turnRight();
-                break;
-            }
-        },
-        100
-    )
-    });
+            res.send("takeoff");
+            setInterval(
+                function(){
+                    switch(command){
+                    case 'forward':
+                        drone.forward();
+                        break;
+                    case 'backward':
+                        drone.backward();
+                        break;
+                    case 'tleft':   
+                        drone.turnLeft();
+                        break;
+                    case 'tright':   
+                        drone.turnRight();
+                        break;
+                    }
+                },
+                100
+            )
+        }
+    );
+});
 
 /* 着陸 */
 app.get('/land', function (req, res) {
