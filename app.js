@@ -23,7 +23,9 @@ function cooldown(){
 
 var command = '';
 
-app.use(express.static('public'));
+app.use('/', express.static('public', {
+	    index: "index.html"
+}));
 
 var drone = new Drone(UUID);
 
@@ -93,38 +95,42 @@ app.get('/emergency', function(req, res) {
 app.get('/forward', function(req, res) {
     command = 'forward';
 	res.send('Forward');
+      cooldown();
     });
 
 /* 後進 */
 app.get('/backward', function(req, res) {
     command = 'backward';
 	res.send('Backward');
+      cooldown();
     });
 
 /* 左旋回 */
 app.get('/turnLeft', function(req, res) {
     command = 'tleft';
 	res.send('Turn Left');
+      cooldown();
     });
 
 /* 右旋回 */
 app.get('/turnRight', function(req, res) {
     command = 'tright';
 	res.send('Turn Right');
+      cooldown();
     });
 
 /* 前転 */
 app.get('/frontFlip', function(req, res) {
       drone.frontFlip({ steps: STEPS });
-      cooldown();
 	res.send('Front Flip');
+      cooldown();
     });
 
 /* 後転 */
 app.get('/backFlip', function(req, res) {
       drone.backFlip({ steps: STEPS });
-      cooldown();
 	res.send('Back Flip');
+      cooldown();
     });
 
 /* 上昇 */
@@ -153,11 +159,13 @@ app.listen(3000, function () {
     console.log('app listening on port 3000!');
     });
 
-drone.connect(function() {
-    drone.setup(function(){
-        console.log('Configured for Rolling Spider! ', drone.name);
-        drone.flatTrim();
-        drone.startPing();
-        drone.flatTrim();
+drone.disconnect(function(){
+    drone.connect(function() {
+        drone.setup(function(){
+            console.log('Configured for Rolling Spider! ', drone.name);
+            drone.flatTrim();
+            drone.startPing();
+            drone.flatTrim();
+        });
     });
 });
