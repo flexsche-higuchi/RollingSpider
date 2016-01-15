@@ -1,4 +1,4 @@
-module.exports.Swarm = require('./lib/swarm');
+//module.exports.Swarm = require('./lib/swarm');
 
 var express = require('express');
 var Drone = require('rolling-spider');
@@ -15,7 +15,7 @@ if (process.env.UUID) {
 */
 
 /* for swarm */
-var Swarm = require('.').Swarm;
+var Swarm = require('rolling-spider').Swarm;
 var ACTIVE = true;
 var STEPS = 5;
 
@@ -23,8 +23,8 @@ var STEPS = 5;
 //var swarm = new Swarm({timeout: 10});
 // hosoi's drone ["bf718a716b944996908ac86a8f2c2803"]
 // higuchi's drone ["8813276e878d42759150dcb9f8457f8b"]
-var swarm = new Swarm("bf718a716b944996908ac86a8f2c2803");
-//var swarm = new Swarm(["bf718a716b944996908ac86a8f2c2803","8813276e878d42759150dcb9f8457f8b"]);
+//var swarm = new Swarm("bf718a716b944996908ac86a8f2c2803");
+var swarm = new Swarm(["bf718a716b944996908ac86a8f2c2803","8813276e878d42759150dcb9f8457f8b"]);
 
 /* 一定時間はコマンドを受け付けないようにする */
 function cooldown(){
@@ -188,9 +188,9 @@ swarm.on('assembled', function () {
     drone.flatTrim();
     drone.startPing();
     drone.flatTrim();
-*/
     app.listen(3000, function () {
         console.log('Example app listening on port 3000!');
     });
+*/
 });
 /* end swarm define */
