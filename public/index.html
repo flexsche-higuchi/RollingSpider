@@ -92,22 +92,29 @@ function initSpeechApi() {
     }
     me.addClass('active');
     recognition.start();
-    value = '';
+    value = null;
     jQuery('#recognition').text('音声認識開始');
   }).mouseup(stopRecognition).mouseleave(stopRecognition);
 
   function stopRecognition(){
     jQuery(this).removeClass('active');
     recognition.stop();
-    if (value == null) {
+    if (value == null || value.length == 0) {
       return;
     }
-    if (value.indexOf('前') == 0) {
+    var first = value.substr(0, 1);
+    if (first == '前') {
       jQuery('#frontFlip').click();
-    } else if (value.indexOf('後') == 0) {
+    } else if (first == '後') {
       jQuery('#backFlip').click();
+    } else if (first == '右') {
+      jQuery('#turnRight').click();
+    } else if (first == '左') {
+      jQuery('#turnLeft').click();
+    } else if (first == '終') {
+      jQuery('#land').click();
     }
-    value = '';
+    value = null;
   }
 }
 
