@@ -135,6 +135,7 @@ app.get('/up', function(req, res) {
 app.get('/down', function(req, res) {
     command = 'down';
 	res.send('Down');
+});
 
 app.get('/stop', function(req, res){
     command = '';
