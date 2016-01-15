@@ -1,0 +1,101 @@
+<html>
+<body>
+<button class="op" id="takeoff">Takeoff</button>
+<button class="op flying" id="land">Land</button>
+<button class="op" id="emergency">Emergency</button>
+
+<table>
+<tr><td><button class="op flying" id="forward">↑</button></td></tr>
+<tr>
+  <td><button class="op flying" id="turnLeft">←</button></td>
+  <td><button class="op flying" id="turnRight">⇨</button></td>
+</tr>
+<tr><td><button class="op flying" id="backward">↓</button></td></tr>
+</table>
+
+<input type="checkbox" id="voice">音声
+
+<div>
+  Battery: <span id="battery"></span>%
+  Flying: <span id="flying"></span>
+</div>
+
+<div id="path"></div>
+<div id="response"></div>
+
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+<script type="text/javascript">
+if (!('webkitSpeechRecognition' in window)) {
+  alert('音声入力には未対応です。');
+} else {
+  var recognition = new webkitSpeechRecognition();
+  var recognizing = false;
+  recognition.lang = 'ja_JP';
+  recognition.continuous = true;
+  recognition.interimResults = true;
+
+  recognition.onstart = function() {
+    recognizing = true;
+  };
+
+  recognition.onerror = function(event) {
+    if (event.error == 'no-speech') {
+    }
+    if (event.error == 'audio-capture') {
+    }
+    if (event.error == 'not-allowed') {
+    }
+  };
+
+  recognition.onend = function() {
+    recognizing = false;
+  };
+
+  recognition.onresult = function(event) {
+    var value = '';
+    for (var i = event.resultIndex; i < event.results.length; i++) {
+      value += event.results[i][0].transcript;
+    }
+    jQuery('#response').text(value);
+    if (value == '飛び上がれ') {
+      jQuery('#takeoff').click();
+    }
+  };
+}
+
+jQuery(document).ready(function(){
+  jQuery('button.op').click(function(){
+    var button = jQuery(this);
+    var id = button.attr('id');
+    var path = '/' + id;
+    jQuery('#path').text(path);
+    jQuery.get(path).done(function(data) {
+      jQuery('#response').text(data);
+    });
+  });
+
+  jQuery('#voice').change(function(){
+    if(jQuery(this).is(':checked')) {
+      recognition.start();
+    } else {
+      recognition.stop();
+    }
+  });
+
+  /* 状態を把握 */
+  const INTERVAL = 2000;
+  function getStatus() {
+    jQuery.get('/status').done(function(data) {
+      var flying = data.flying;
+      jQuery('#flying').text(flying);
+      //jQuery('button.op.flying').attr('disabled', !flying);
+      //jQuery('#takeoff').attr('disabled', flying); 
+      jQuery('#battery').text(data.battery);
+      setTimeout(getStatus, INTERVAL);
+    });
+  }
+  setTimeout(getStatus, INTERVAL);
+});
+</script>
+</body>
+</html>
