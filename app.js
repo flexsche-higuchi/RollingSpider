@@ -103,13 +103,13 @@ app.get('/stop', function(req, res){
     res.send('Stop');
 });
 
-app.get('/battery', function(req, res) {
-	var battery = drone.status.battery;
-	res.send(battery);
+/* 状態 */
+app.get('/status', function(req, res) {
+        res.send(drone.status);
     });
 
 app.listen(3000, function () {
-    console.log('Example app listening on port 3000!');
+    console.log('app listening on port 3000!');
     });
 
 drone.connect(function() {
