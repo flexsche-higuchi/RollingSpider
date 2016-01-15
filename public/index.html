@@ -37,6 +37,11 @@
 </tr>
 </table>
 
+<button class="op" id="up">上昇</button>
+<button class="op" id="down">下降</button>
+<button class="op" id="frontFlip">前転</button>
+<button class="op" id="backFlip">後転</button>
+
 <div>
   Battery: <span id="battery"></span>%
   Flying: <span id="flying"></span>
@@ -95,11 +100,9 @@ function initSpeechApi() {
     jQuery(this).removeClass('active');
     recognition.stop();
     if (value.indexOf('前') == 0) {
-      jQuery('#forward').click();
-    } else if (value.indexOf('右') == 0) {
-      jQuery('#turnRight').click();
-    } else if (value.indexOf('左') == 0) {
-      jQuery('#turnLeft').click();
+      jQuery('#frontFlip').click();
+    } else if (value.indexOf('後') == 0) {
+      jQuery('#backFlip').click();
     }
     value = '';
   }
