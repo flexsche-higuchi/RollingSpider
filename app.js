@@ -157,11 +157,13 @@ app.listen(3000, function () {
     console.log('app listening on port 3000!');
     });
 
-drone.connect(function() {
-    drone.setup(function(){
-        console.log('Configured for Rolling Spider! ', drone.name);
-        drone.flatTrim();
-        drone.startPing();
-        drone.flatTrim();
+drone.disconnect(function(){
+    drone.connect(function() {
+        drone.setup(function(){
+            console.log('Configured for Rolling Spider! ', drone.name);
+            drone.flatTrim();
+            drone.startPing();
+            drone.flatTrim();
+        });
     });
 });
