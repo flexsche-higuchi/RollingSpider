@@ -3,16 +3,6 @@
 var express = require('express');
 var Drone = require('rolling-spider');
 var app = express();
-/*
-var UUID = '';
-if (process.env.UUID) {
-    console.log('UUID:', process.env.UUID);
-    var UUID = process.env.UUID;
-} else {
-    console.log('You shoud set UUID');
-    process.exit();
-}
-*/
 
 /* for swarm */
 var Swarm = require('rolling-spider').Swarm;
@@ -37,8 +27,6 @@ function cooldown(){
 var command = '';
 
 app.use(express.static('public'));
-
-//var drone = new Drone(UUID);
 
 app.get('/', function (req, res) {
   res.send('ready for flight!');
@@ -168,29 +156,13 @@ app.listen(3000, function () {
     console.log('app listening on port 3000!');
     });
 
-/*
-drone.connect(function() {
-    drone.setup(function(){
-        console.log('Configured for Rolling Spider! ', drone.name);
-        drone.flatTrim();
-        drone.startPing();
-        drone.flatTrim();
-    });
-});
-*/
-
 /* start swarm define */
 swarm.assemble();
 swarm.on('assembled', function () {
   ACTIVE = true;
-    console.log('Configured for Rolling Spider! ');
-/*
-    drone.flatTrim();
-    drone.startPing();
-    drone.flatTrim();
-    app.listen(3000, function () {
-        console.log('Example app listening on port 3000!');
-    });
-*/
+  console.log('Configured for Rolling Spider! ', swarm.members.length);
+    swarm.members.forEach(function(member){
+	    console.log(member.name);
+	});
 });
 /* end swarm define */
