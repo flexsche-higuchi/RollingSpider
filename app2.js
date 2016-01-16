@@ -26,11 +26,9 @@ function cooldown(){
 
 var command = '';
 
-app.use(express.static('public'));
-
-app.get('/', function (req, res) {
-  res.send('ready for flight!');
-});
+app.use('/', express.static('public', {
+	    index: 'index.html'
+}));
 
 /* 離陸 */
 app.get('/takeoff', function (req, res) {
