@@ -20,11 +20,11 @@ var ACTIVE = true;
 var STEPS = 5;
 
 /* swarm define */
-//var swarm = new Swarm({timeout: 10});
+var swarm = new Swarm({timeout: 10});
 // hosoi's drone ["bf718a716b944996908ac86a8f2c2803"]
 // higuchi's drone ["8813276e878d42759150dcb9f8457f8b"]
 //var swarm = new Swarm("bf718a716b944996908ac86a8f2c2803");
-var swarm = new Swarm(["bf718a716b944996908ac86a8f2c2803","8813276e878d42759150dcb9f8457f8b"]);
+//var swarm = new Swarm(["bf718a716b944996908ac86a8f2c2803","8813276e878d42759150dcb9f8457f8b"]);
 
 /* 一定時間はコマンドを受け付けないようにする */
 function cooldown(){
